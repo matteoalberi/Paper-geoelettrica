@@ -14,4 +14,4 @@ PER FIGURE 8:
 - 3D_model
 
 PER FIGURE 9:
-2d_resistivity
+- 2d_resistivity
