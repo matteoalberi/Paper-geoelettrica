@@ -269,7 +269,7 @@ out_fold = "C:/Users/lopan/PycharmProjects/STELLA/Res"
 # centralina
 ZERO = np.r_[1700614.677, 4761544.891, 229.644]
 ERT = True
-OHM = False
+OHM = True
 alpha = 0.07  # ohm weight
 
 
@@ -371,36 +371,36 @@ if ERT and not OHM:
 
 if OHM and not ERT:
 
-    filename = 'C:/Users/lopan/PycharmProjects/STELLA/Res/DEFINITIVI/1/ohm_13it_fil.txt'
+    filename = 'C:/Users/lopan/PycharmProjects/STELLA/Res/DEFINITIVI/1/ohm_13it.txt'
     res_mod = np.loadtxt(filename)
 
 
 
 ## Calcolare le statistiche richieste
-#num_data_res_mod = len(res_mod)
-#min_value_res_mod = np.min(res_mod)
-#max_value_res_mod = np.max(res_mod)
-#mean_value_res_mod = np.mean(res_mod)
-#median_value_res_mod = np.median(res_mod)
-#std_deviation_res_mod = np.std(res_mod)
-#variance_res_mod = np.var(res_mod)
+num_data_res_mod = len(res_mod)
+min_value_res_mod = np.min(res_mod)
+max_value_res_mod = np.max(res_mod)
+mean_value_res_mod = np.mean(res_mod)
+median_value_res_mod = np.median(res_mod)
+std_deviation_res_mod = np.std(res_mod)
+variance_res_mod = np.var(res_mod)
 #
 ## Stampare i risultati
-#print(f"Number of data points: {num_data_res_mod}")
-#print(f"Minimum value: {min_value_res_mod}")
-#print(f"Maximum value: {max_value_res_mod}")
-#print(f"Mean value: {mean_value_res_mod}")
-#print(f"Median value: {median_value_res_mod}")
-#print(f"Standard deviation: {std_deviation_res_mod}")
-#print(f"Variance: {variance_res_mod}")
+print(f"Number of data points: {num_data_res_mod}")
+print(f"Minimum value: {min_value_res_mod}")
+print(f"Maximum value: {max_value_res_mod}")
+print(f"Mean value: {mean_value_res_mod}")
+print(f"Median value: {median_value_res_mod}")
+print(f"Standard deviation: {std_deviation_res_mod}")
+print(f"Variance: {variance_res_mod}")
 #
 ### Calcolare i valori di +3σ e -3σ
 ##plus_2sigma = mean_value_res_mod + 2 * std_deviation_res_mod
 ##minus_2sigma = mean_value_res_mod - 2 * std_deviation_res_mod
 ##
 ### Creare la figura e l'istogramma
-fig = plt.figure(figsize=(10, 5))  # Imposta la dimensione del grafico
-plt.hist(res_mod, bins=30, color='b', edgecolor='k', alpha=0.7)
+#fig = plt.figure(figsize=(10, 5))  # Imposta la dimensione del grafico
+#plt.hist(res_mod, bins=30, color='b', edgecolor='k', alpha=0.7)
 ##
 ### Aggiungere linee per la media e le deviazioni standard
 ##plt.axvline(mean_value_res_mod, color='r', linestyle='dashed', linewidth=2, label='Mean')
@@ -409,12 +409,12 @@ plt.hist(res_mod, bins=30, color='b', edgecolor='k', alpha=0.7)
 ##
 ### plt.xscale('log')
 ### Aggiungere il titolo e le etichette degli assi
-plt.title('Distribution of Resistivity Values')  # Titolo del grafico
-plt.xlabel('Resistivity [Ohm/m]')  # Etichetta dell'asse X
-plt.ylabel('Frequency')  # Etichetta dell'asse Y
-plt.grid(True)
-plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM/risultati_13_iter/res_mod_distribution_log.png', dpi=300, bbox_inches='tight')
-plt.close(fig)  # Chiude la figura per liberare memoria
+#plt.title('Distribution of Resistivity Values')  # Titolo del grafico
+#plt.xlabel('Resistivity [Ohm/m]')  # Etichetta dell'asse X
+#plt.ylabel('Frequency')  # Etichetta dell'asse Y
+#plt.grid(True)
+#plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM/risultati_13_iter/res_mod_distribution_log.png', dpi=300, bbox_inches='tight')
+#plt.close(fig)  # Chiude la figura per liberare memoria
 
 if ERT and OHM:
     # Definizione dei colori
@@ -508,11 +508,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == 7.8)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -1
+        z0 = -3
         y1 = 0
         z1 = -4
         y2 = 8
-        z2 = -1
+        z2 = -3
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -553,11 +553,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == 7.8)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -1
+        z0 = -3
         y1 = 0
         z1 = -4
         y2 = 8
-        z2 = -1
+        z2 = -3
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -612,11 +612,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == 2.9)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -1
+        z0 = -3
         y1 = 0
         z1 = -4.5
         y2 = 8
-        z2 = -1
+        z2 = -3
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -656,11 +656,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == 2.9)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -1
+        z0 = -3
         y1 = 0
         z1 = -4.5
         y2 = 8
-        z2 = -1
+        z2 = -3
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -715,11 +715,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == 0.9)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -1
+        z0 = -3
         y1 = 0
         z1 = -5.5
         y2 = 8
-        z2 = -1
+        z2 = -3
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -759,11 +759,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == 0.9)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -1
+        z0 = -3
         y1 = 0
         z1 = -5.5
         y2 = 8
-        z2 = -1
+        z2 = -3
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -818,11 +818,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == -2.1)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -1
+        z0 = -3
         y1 = 0
         z1 = -5.5
         y2 = 8
-        z2 = -1
+        z2 = -3
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -862,11 +862,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == -2.1)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -1
+        z0 = -3
         y1 = 0
         z1 = -5.5
         y2 = 8
-        z2 = -1
+        z2 = -3
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -921,11 +921,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == -5)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -1
+        z0 = -3
         y1 = 0
         z1 = -4.5
         y2 = 8
-        z2 = -1
+        z2 = -3
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -965,11 +965,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] ==- 5)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -1
+        z0 = -3
         y1 = 0
         z1 = -4.5
         y2 = 8
-        z2 = -1
+        z2 = -3
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -1024,11 +1024,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == -8)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -1
+        z0 = -3
         y1 = 0
         z1 = -4
         y2 = 8
-        z2 = -1
+        z2 = -3
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -1068,11 +1068,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == -8)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -1
+        z0 = -3
         y1 = 0
         z1 = -4
         y2 = 8
-        z2 = -1
+        z2 = -3
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
