@@ -6,9 +6,9 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 mpl.use('TkAgg')
 mpl.rcParams.update({'font.size': 26})
 
-mod_j = np.loadtxt(r"C:\Users\Pierini\Documents\Python_Projects\src\STELLA\SimPEG\src\XYZr_Joint_80perc.txt", skiprows=1)
-mod_ert = np.loadtxt(r"C:\Users\Pierini\Documents\Python_Projects\src\STELLA\SimPEG\src\XYZr_GCR.txt", skiprows=1)
-mod_ohm = np.loadtxt(r"C:\Users\Pierini\Documents\Python_Projects\src\STELLA\SimPEG\src\XYZr_CCR_80perc.txt", skiprows=1)
+mod_j = np.loadtxt('C:/Users/lopan/PycharmProjects/STELLA/Res/DEFINITIVI/1/XYZr_Joint_80perc.txt', skiprows=1)
+mod_ert = np.loadtxt('C:/Users/lopan/PycharmProjects/STELLA/Res/ERT/XYZr_GCR.txt', skiprows=1)
+mod_ohm = np.loadtxt('C:/Users/lopan/PycharmProjects/STELLA/Res/DEFINITIVI/1/XYZr_CCR_80perc.txt', skiprows=1)
 
 colors = np.array([
         [0, 0, 255, 255],
@@ -68,8 +68,7 @@ bin_j = np.append(np.append(0, bin_j[1][:-1] + np.mean(np.diff(bin_j[1]))), 250)
 bin_ert = np.append(np.append(0, bin_ert[1][:-1] + np.mean(np.diff(bin_ert[1]))), 250)
 bin_ohm = np.append(np.append(0, bin_ohm[1][:-1] + np.mean(np.diff(bin_ohm[1]))), 250)
 
-
-ax = plt.subplot(1, 1, 1)
+fig, ax = plt.subplots(figsize=(22, 10))
 frame = plt.gca()
 ax.plot(bin_ohm, val_ohm, label='CCR', linewidth=5)
 ax.plot(bin_ert, val_ert, label='GCR', linewidth=5)
@@ -92,7 +91,7 @@ cbar2 = plt.colorbar(sct2, cax=axBar2, orientation='horizontal', ticks=colorscal
 cbar2.ax.tick_params(labelsize=12)
 cbar2.set_label('Resistivity [Ω⋅m]')
 
-plt.savefig('Figure5.png')
+plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Figure5.png')
 frmt = '{0:.4f} {1:.4f} {2:.4f} {3:.4f}\n'
 with open('colorscale.lut', 'w')as fid:
     fid.write('LOOKUP_TABLE UnnamedTable 256\n')
