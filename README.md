@@ -4,6 +4,9 @@ PER INVERSIONI:
 - write_model (scrittura file XYZrho post inversione)
 - interp_grid (scrittura file XYZrho interpolato)
 
+PER FIGURE 4:
+- Andamento_inversioni.py
+
 PER FIGURE 5:
 - plot_hist
 

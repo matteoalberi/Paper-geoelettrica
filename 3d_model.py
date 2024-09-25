@@ -4,7 +4,7 @@ import numpy as np
 from scipy.interpolate import griddata
 
 # Carica i dati dal file, ignorando la prima riga di intestazione
-data = np.loadtxt('C:/Users/lopan/PycharmProjects/STELLA/Res/DEFINITIVI/1/XYZr_Joint_80perc.txt', skiprows=1)
+data = np.loadtxt('XYZr_Joint_80perc.txt', skiprows=1)
 x, y, z, rho = data[:, 0], data[:, 1], data[:, 2], data[:, 3]
 
 # Definisci i limiti del modello
@@ -23,7 +23,7 @@ grid_x, grid_y, grid_z = np.mgrid[x_min:x_max:100j, y_min:y_max:100j, z_min:z_ma
 grid_rho = griddata((x, y, z), rho, (grid_x, grid_y, grid_z), method='linear', fill_value=rho.min())
 
 # Salva i dati interpolati in un file .npz
-np.savez('C:/Users/lopan/PycharmProjects/STELLA/Res/Figure8.npz', grid_x=grid_x, grid_y=grid_y, grid_z=grid_z, grid_rho=grid_rho)
+np.savez('Figure8.npz', grid_x=grid_x, grid_y=grid_y, grid_z=grid_z, grid_rho=grid_rho)
 
 
 ###########################
@@ -32,7 +32,7 @@ import numpy as np
 import mayavi.mlab as mlab
 
 # Carica i dati dal file .npz
-data = np.load('C:/Users/lopan/PycharmProjects/STELLA/Res/Figure8.npz')
+data = np.load('Figure8.npz')
 grid_x = data['grid_x']
 grid_y = data['grid_y']
 grid_z = data['grid_z']
@@ -78,7 +78,7 @@ vol_full = mlab.pipeline.volume(mlab.pipeline.scalar_field(grid_x, grid_y, grid_
 vol_full.module_manager.scalar_lut_manager.lut_mode = 'file'
 
 # Specifica il percorso del file .lut da usare
-lut_file_path = r'G:\.shortcut-targets-by-id\1U5Mbs1kWT545VLL1mMUjiV8eOfupEFet\Paper Geoelettrica\Draft\Figure\Figure5\colorscale.lut'
+lut_file_path = r'colorscale.lut'
 vol_full.module_manager.scalar_lut_manager.load_lut_from_file(lut_file_path)
 
 # Imposta il range della colormap tra 0 e 250

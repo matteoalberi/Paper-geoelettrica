@@ -1,6 +1,3 @@
-
-import os
-
 import time
 import numpy as np
 import matplotlib
@@ -9,10 +6,10 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import geotiff as gtf
 import scipy
-import autograd
 import src.read_input as ri
 import matplotlib.ticker as ticker
-from simpeg import SolverLU as Solver
+import sys
+#sys.path.append(r'C:\Users\miche\AppData\Roaming\Python\Python38\site-packages')
 
 from discretize import TreeMesh
 from discretize.utils import mkvc, refine_tree_xyz, active_from_xyz
@@ -256,20 +253,20 @@ def MeshFromSurvey(dxy, dz, dom_width_x, dom_width_y, dom_width_z, topo_xyz, sur
 #########################################################################
 # input filepath
 # -------------------
-filepath_tif = "C:/Users/lopan/PycharmProjects/STELLA/data/vigna_quote.tif"
-topo_filename = "C:/Users/lopan/PycharmProjects/STELLA/data/quote_grid.xyz"
-ert_data_filename = "C:/Users/lopan/PycharmProjects/STELLA/data/VIGNA_3D_DICEMBRE_23.xyz"
-ohm_data_filename = "C:/Users/lopan/PycharmProjects/STELLA/data/VIGNA_ohm_DICEMBRE_23.xyz"
-ert_raw_filename = "C:/Users/lopan/PycharmProjects/STELLA/data/VIGNA_3D_DICEMBRE_23.bin"
-ert_gps_filename = "C:/Users/lopan/PycharmProjects/STELLA/data/vigna_ert_gau-o.txt"
-ert_quad_filename = "C:/Users/lopan/PycharmProjects/STELLA/data/vigna_dip-dip.txt"
-ohm_raw_filename = "C:/Users/lopan/PycharmProjects/STELLA/data/vigna_ohm_mod.stn"
-ohm_gps_filename = "C:/Users/lopan/PycharmProjects/STELLA/data/vigna_ohm_gau-o.txt"
-out_fold = "C:/Users/lopan/PycharmProjects/STELLA/Res"
+filepath_tif = "vigna_quote.tif"
+topo_filename = "quote_grid.xyz"
+ert_data_filename = "VIGNA_3D_DICEMBRE_23.xyz"
+ohm_data_filename = "VIGNA_ohm_DICEMBRE_23.xyz"
+ert_raw_filename = "VIGNA_3D_DICEMBRE_23.bin"
+ert_gps_filename = "vigna_ert_gau-o.txt"
+ert_quad_filename = "vigna_dip-dip.txt"
+ohm_raw_filename = "vigna_ohm_mod.stn"
+ohm_gps_filename = "vigna_ohm_gau-o.txt"
+out_fold = "Res"
 # centralina
 ZERO = np.r_[1700614.677, 4761544.891, 229.644]
 ERT = True
-OHM = True
+OHM = False
 alpha = 0.07  # ohm weight
 
 
@@ -361,46 +358,46 @@ if OHM:
 # Plot conductivity model
 if ERT and OHM:
 
-    filename = 'C:/Users/lopan/PycharmProjects/STELLA/Res/DEFINITIVI/1/joint_14it_fil.txt'
+    filename = 'joint_14it_fil.txt'
     res_mod = np.loadtxt(filename)
 
 if ERT and not OHM:
 
-    filename = 'C:/Users/lopan/PycharmProjects/STELLA/Res/ERT/res_mod.txt'
+    filename = 'res_mod.txt'
     res_mod = np.loadtxt(filename)
 
 if OHM and not ERT:
 
-    filename = 'C:/Users/lopan/PycharmProjects/STELLA/Res/DEFINITIVI/1/ohm_13it.txt'
+    filename = 'ohm_13it_fil.txt'
     res_mod = np.loadtxt(filename)
 
 
 
 ## Calcolare le statistiche richieste
-num_data_res_mod = len(res_mod)
-min_value_res_mod = np.min(res_mod)
-max_value_res_mod = np.max(res_mod)
-mean_value_res_mod = np.mean(res_mod)
-median_value_res_mod = np.median(res_mod)
-std_deviation_res_mod = np.std(res_mod)
-variance_res_mod = np.var(res_mod)
+#num_data_res_mod = len(res_mod)
+#min_value_res_mod = np.min(res_mod)
+#max_value_res_mod = np.max(res_mod)
+#mean_value_res_mod = np.mean(res_mod)
+#median_value_res_mod = np.median(res_mod)
+#std_deviation_res_mod = np.std(res_mod)
+#variance_res_mod = np.var(res_mod)
 #
 ## Stampare i risultati
-print(f"Number of data points: {num_data_res_mod}")
-print(f"Minimum value: {min_value_res_mod}")
-print(f"Maximum value: {max_value_res_mod}")
-print(f"Mean value: {mean_value_res_mod}")
-print(f"Median value: {median_value_res_mod}")
-print(f"Standard deviation: {std_deviation_res_mod}")
-print(f"Variance: {variance_res_mod}")
+#print(f"Number of data points: {num_data_res_mod}")
+#print(f"Minimum value: {min_value_res_mod}")
+#print(f"Maximum value: {max_value_res_mod}")
+#print(f"Mean value: {mean_value_res_mod}")
+#print(f"Median value: {median_value_res_mod}")
+#print(f"Standard deviation: {std_deviation_res_mod}")
+#print(f"Variance: {variance_res_mod}")
 #
 ### Calcolare i valori di +3σ e -3σ
 ##plus_2sigma = mean_value_res_mod + 2 * std_deviation_res_mod
 ##minus_2sigma = mean_value_res_mod - 2 * std_deviation_res_mod
 ##
 ### Creare la figura e l'istogramma
-#fig = plt.figure(figsize=(10, 5))  # Imposta la dimensione del grafico
-#plt.hist(res_mod, bins=30, color='b', edgecolor='k', alpha=0.7)
+fig = plt.figure(figsize=(10, 5))  # Imposta la dimensione del grafico
+plt.hist(res_mod, bins=30, color='b', edgecolor='k', alpha=0.7)
 ##
 ### Aggiungere linee per la media e le deviazioni standard
 ##plt.axvline(mean_value_res_mod, color='r', linestyle='dashed', linewidth=2, label='Mean')
@@ -409,19 +406,19 @@ print(f"Variance: {variance_res_mod}")
 ##
 ### plt.xscale('log')
 ### Aggiungere il titolo e le etichette degli assi
-#plt.title('Distribution of Resistivity Values')  # Titolo del grafico
-#plt.xlabel('Resistivity [Ohm/m]')  # Etichetta dell'asse X
-#plt.ylabel('Frequency')  # Etichetta dell'asse Y
-#plt.grid(True)
-#plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM/risultati_13_iter/res_mod_distribution_log.png', dpi=300, bbox_inches='tight')
-#plt.close(fig)  # Chiude la figura per liberare memoria
+plt.title('Distribution of Resistivity Values')  # Titolo del grafico
+plt.xlabel('Resistivity [Ohm/m]')  # Etichetta dell'asse X
+plt.ylabel('Frequency')  # Etichetta dell'asse Y
+plt.grid(True)
+plt.savefig(r'res_mod_distribution_log.png', dpi=300, bbox_inches='tight')
+plt.close(fig)  # Chiude la figura per liberare memoria
 
 if ERT and OHM:
     # Definizione dei colori
 
-    model_interp = np.loadtxt('C:/Users/lopan/PycharmProjects/STELLA/Res/DEFINITIVI/1/XYZr_Joint_80perc.txt', skiprows=1, delimiter='\t')
+    model_interp = np.loadtxt('XYZr_Joint_80perc.txt', skiprows=1, delimiter='\t')
     colormap = np.loadtxt(
-        r"G:\.shortcut-targets-by-id\1U5Mbs1kWT545VLL1mMUjiV8eOfupEFet\Paper Geoelettrica\Draft\Figure\Figure5\colorscale.lut",
+        r"colorscale.lut",
         skiprows=1, delimiter=' ')
     cmap_new = matplotlib.colors.ListedColormap(colormap)
 
@@ -499,7 +496,7 @@ if ERT and OHM:
     cbar.set_label("Resistivity [Ohm*m]")
 
     # Salvare la figura
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\ERT\perc.png', dpi=300, bbox_inches='tight')
+    plt.savefig(r'perc.png', dpi=300, bbox_inches='tight')
     plt.close(fig)
     ####
     # Modello di resistività
@@ -508,11 +505,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == 7.8)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -3
+        z0 = -1
         y1 = 0
         z1 = -4
         y2 = 8
-        z2 = -3
+        z2 = -1
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -543,7 +540,7 @@ if ERT and OHM:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\x7.8.png', dpi=300,
+    plt.savefig(r'x7.8.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -553,11 +550,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == 7.8)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -3
+        z0 = -1
         y1 = 0
         z1 = -4
         y2 = 8
-        z2 = -3
+        z2 = -1
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -577,7 +574,7 @@ if ERT and OHM:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-5, 0])
     ax1.set_xlim([-8, 8])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\model_x7_8.png', dpi=300,
+    plt.savefig(r'model_x7_8.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -601,7 +598,7 @@ if ERT and OHM:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\mesh_x7.8.png', dpi=300,
+    plt.savefig(r'mesh_x7.8.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     #########
@@ -612,11 +609,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == 2.9)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -3
+        z0 = -1
         y1 = 0
         z1 = -4.5
         y2 = 8
-        z2 = -3
+        z2 = -1
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -646,7 +643,7 @@ if ERT and OHM:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\x3.png', dpi=300,
+    plt.savefig(r'x3.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -656,11 +653,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == 2.9)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -3
+        z0 = -1
         y1 = 0
         z1 = -4.5
         y2 = 8
-        z2 = -3
+        z2 = -1
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -680,7 +677,7 @@ if ERT and OHM:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-5, 0])
     ax1.set_xlim([-8, 8])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\model_x3.png', dpi=300,
+    plt.savefig(r'model_x3.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -704,7 +701,7 @@ if ERT and OHM:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\mesh_x3.png', dpi=300,
+    plt.savefig(r'mesh_x3.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     #########
@@ -715,11 +712,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == 0.9)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -3
+        z0 = -1
         y1 = 0
         z1 = -5.5
         y2 = 8
-        z2 = -3
+        z2 = -1
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -749,7 +746,7 @@ if ERT and OHM:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\x1.png', dpi=300,
+    plt.savefig(r'x1.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -759,11 +756,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == 0.9)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -3
+        z0 = -1
         y1 = 0
         z1 = -5.5
         y2 = 8
-        z2 = -3
+        z2 = -1
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -783,7 +780,7 @@ if ERT and OHM:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-5, 0])
     ax1.set_xlim([-8, 8])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\model_x1.png', dpi=300,
+    plt.savefig(r'model_x1.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -807,7 +804,7 @@ if ERT and OHM:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\mesh_x1.png', dpi=300,
+    plt.savefig(r'mesh_x1.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     #########
@@ -818,11 +815,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == -2.1)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -3
+        z0 = -1
         y1 = 0
         z1 = -5.5
         y2 = 8
-        z2 = -3
+        z2 = -1
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -852,7 +849,7 @@ if ERT and OHM:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\x-2.png', dpi=300,
+    plt.savefig(r'x-2.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -862,11 +859,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == -2.1)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -3
+        z0 = -1
         y1 = 0
         z1 = -5.5
         y2 = 8
-        z2 = -3
+        z2 = -1
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -886,7 +883,7 @@ if ERT and OHM:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-5, 0])
     ax1.set_xlim([-8, 8])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\model_x-2.png', dpi=300,
+    plt.savefig(r'model_x-2.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -910,7 +907,7 @@ if ERT and OHM:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\mesh_x-2.png', dpi=300,
+    plt.savefig(r'mesh_x-2.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     #########
@@ -921,11 +918,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == -5)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -3
+        z0 = -1
         y1 = 0
         z1 = -4.5
         y2 = 8
-        z2 = -3
+        z2 = -1
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -955,7 +952,7 @@ if ERT and OHM:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\x-5.png', dpi=300,
+    plt.savefig(r'x-5.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -965,11 +962,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] ==- 5)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -3
+        z0 = -1
         y1 = 0
         z1 = -4.5
         y2 = 8
-        z2 = -3
+        z2 = -1
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -989,7 +986,7 @@ if ERT and OHM:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-5, 0])
     ax1.set_xlim([-8, 8])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\model_x-5.png', dpi=300,
+    plt.savefig(r'model_x-5.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -1013,7 +1010,7 @@ if ERT and OHM:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\mesh_x-5.png', dpi=300,
+    plt.savefig(r'mesh_x-5.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     #########
@@ -1024,11 +1021,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == -8)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -3
+        z0 = -1
         y1 = 0
         z1 = -4
         y2 = 8
-        z2 = -3
+        z2 = -1
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -1058,7 +1055,7 @@ if ERT and OHM:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\x-8.png', dpi=300,
+    plt.savefig(r'x-8.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -1068,11 +1065,11 @@ if ERT and OHM:
     ix = np.where(model_interp[:, 0] == -8)[0]
     for i in np.arange(len(model_interp[ix, 0])):
         y0 = -8
-        z0 = -3
+        z0 = -1
         y1 = 0
         z1 = -4
         y2 = 8
-        z2 = -3
+        z2 = -1
         p1 = z0 + (model_interp[ix[i], 1] - y0) * (z1 - z0) / (y1 - y0)
         p2 = z1 + (model_interp[ix[i], 1] - y1) * (z2 - z1) / (y2 - y1)
         if model_interp[ix[i], 2] < max(p1, p2):
@@ -1092,7 +1089,7 @@ if ERT and OHM:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-5, 0])
     ax1.set_xlim([-8, 8])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\model_x-8.png', dpi=300,
+    plt.savefig(r'model_x-8.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -1116,14 +1113,14 @@ if ERT and OHM:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\mesh_x-8.png', dpi=300,
+    plt.savefig(r'mesh_x-8.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 #########
-    model_interp = np.loadtxt('C:/Users/lopan/PycharmProjects/STELLA/Res/Joint/XYZr_Joint.txt', skiprows=1,
+    model_interp = np.loadtxt('XYZr_Joint.txt', skiprows=1,
                               delimiter='\t')
     colormap = np.loadtxt(
-         r"G:\.shortcut-targets-by-id\1U5Mbs1kWT545VLL1mMUjiV8eOfupEFet\Paper Geoelettrica\Draft\Figure\Figure5\colorscale.lut",
+         r"colorscale.lut",
         skiprows=1, delimiter=' ')
     cmap_new = matplotlib.colors.ListedColormap(colormap)
   # Modello di resistività
@@ -1153,7 +1150,7 @@ if ERT and OHM:
     ax1.set_xlim([-9, 9])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\y5_8.png', dpi=300,
+    plt.savefig(r'y5_8.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ######
@@ -1175,7 +1172,7 @@ if ERT and OHM:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-3, 0])
     ax1.set_xlim([-9, 9])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\model_y5_8.png', dpi=300,
+    plt.savefig(r'model_y5_8.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -1200,7 +1197,7 @@ if ERT and OHM:
     ax1.set_aspect('equal', adjustable='box')
     ax1.yaxis.set_major_locator(ticker.MultipleLocator(1))
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\mesh_y5_8.png', dpi=300,
+    plt.savefig(r'mesh_y5_8.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 
@@ -1233,7 +1230,7 @@ if ERT and OHM:
     ax1.set_xlim([-9, 9])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\y3.png', dpi=300,
+    plt.savefig(r'y3.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ######
@@ -1255,7 +1252,7 @@ if ERT and OHM:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-3, 0])
     ax1.set_xlim([-9, 9])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\model_y3.png', dpi=300,
+    plt.savefig(r'model_y3.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -1280,7 +1277,7 @@ if ERT and OHM:
     ax1.set_aspect('equal', adjustable='box')
     ax1.yaxis.set_major_locator(ticker.MultipleLocator(1))
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\mesh_y3.png', dpi=300,
+    plt.savefig(r'mesh_y3.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 
@@ -1312,7 +1309,7 @@ if ERT and OHM:
     ax1.set_xlim([-9, 9])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\y1_2.png', dpi=300,
+    plt.savefig(r'y1_2.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ######
@@ -1334,7 +1331,7 @@ if ERT and OHM:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-3, 0])
     ax1.set_xlim([-9, 9])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\model_y1_2.png', dpi=300,
+    plt.savefig(r'model_y1_2.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -1359,7 +1356,7 @@ if ERT and OHM:
     ax1.set_aspect('equal', adjustable='box')
     ax1.yaxis.set_major_locator(ticker.MultipleLocator(1))
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\mesh_y1_2.png', dpi=300,
+    plt.savefig(r'mesh_y1_2.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 
@@ -1391,7 +1388,7 @@ if ERT and OHM:
     ax1.set_xlim([-9, 9])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\y-1_6.png', dpi=300,
+    plt.savefig(r'y-1_6.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ######
@@ -1413,7 +1410,7 @@ if ERT and OHM:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-3, 0])
     ax1.set_xlim([-9, 9])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\model_y-1_6.png', dpi=300,
+    plt.savefig(r'model_y-1_6.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -1438,7 +1435,7 @@ if ERT and OHM:
     ax1.set_aspect('equal', adjustable='box')
     ax1.yaxis.set_major_locator(ticker.MultipleLocator(1))
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\mesh_y-1_6.png', dpi=300,
+    plt.savefig(r'mesh_y-1_6.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 
@@ -1470,7 +1467,7 @@ if ERT and OHM:
     ax1.set_xlim([-9, 9])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\y-4_2.png', dpi=300,
+    plt.savefig(r'y-4_2.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ######
@@ -1492,7 +1489,7 @@ if ERT and OHM:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-3, 0])
     ax1.set_xlim([-9, 9])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\model_y-4_2.png', dpi=300,
+    plt.savefig(r'model_y-4_2.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -1517,7 +1514,7 @@ if ERT and OHM:
     ax1.set_aspect('equal', adjustable='box')
     ax1.yaxis.set_major_locator(ticker.MultipleLocator(1))
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\mesh_y-4_2.png', dpi=300,
+    plt.savefig(r'mesh_y-4_2.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 
@@ -1549,7 +1546,7 @@ if ERT and OHM:
     ax1.set_xlim([-9, 9])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\y-7.png', dpi=300,
+    plt.savefig(r'y-7.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ######
@@ -1571,7 +1568,7 @@ if ERT and OHM:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-3, 0])
     ax1.set_xlim([-9, 9])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\Joint\model_y-7.png', dpi=300,
+    plt.savefig(r'model_y-7.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -1605,9 +1602,9 @@ if ERT and OHM:
 if OHM:
     # Definizione dei colori
 
-    model_interp = np.loadtxt('C:/Users/lopan/PycharmProjects/STELLA/Res/DEFINITIVI/1/XYZr_CCR_80perc.txt', skiprows=1, delimiter='\t')
+    model_interp = np.loadtxt('XYZr_CCR_80perc.txt', skiprows=1, delimiter='\t')
     colormap = np.loadtxt(
-        r"G:\.shortcut-targets-by-id\1U5Mbs1kWT545VLL1mMUjiV8eOfupEFet\Paper Geoelettrica\Draft\Figure\Figure5\colorscale.lut",
+        r"colorscale.lut",
         skiprows=1, delimiter=' ')
     cmap_new = matplotlib.colors.ListedColormap(colormap)
 
@@ -1683,7 +1680,7 @@ if OHM:
     cbar.ax.set_yticklabels(cbar_labels)
     cbar.set_label("Resistivity [Ohm*m]")
     # Salvare la figura
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM\perc_50_13it.png', dpi=300, bbox_inches='tight')
+    plt.savefig(r'perc_50_13it.png', dpi=300, bbox_inches='tight')
     plt.close(fig)
 ############
     # Modello di resistività
@@ -1713,7 +1710,7 @@ if OHM:
     ax1.set_xlim([-9, 9])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM\y5_8.png', dpi=300,
+    plt.savefig(r'y5_8.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ######
@@ -1735,7 +1732,7 @@ if OHM:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-3, 0])
     ax1.set_xlim([-9, 9])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM\model_y5_8.png', dpi=300,
+    plt.savefig(r'model_y5_8.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -1760,7 +1757,7 @@ if OHM:
     ax1.set_aspect('equal', adjustable='box')
     ax1.yaxis.set_major_locator(ticker.MultipleLocator(1))
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM\mesh_y5_8.png', dpi=300,
+    plt.savefig(r'mesh_y5_8.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 
@@ -1793,7 +1790,7 @@ if OHM:
     ax1.set_xlim([-9, 9])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM\y3.png', dpi=300,
+    plt.savefig(r'y3.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ######
@@ -1815,7 +1812,7 @@ if OHM:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-3, 0])
     ax1.set_xlim([-9, 9])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM\model_y3.png', dpi=300,
+    plt.savefig(r'model_y3.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -1840,7 +1837,7 @@ if OHM:
     ax1.set_aspect('equal', adjustable='box')
     ax1.yaxis.set_major_locator(ticker.MultipleLocator(1))
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM\mesh_y3.png', dpi=300,
+    plt.savefig(r'mesh_y3.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 
@@ -1872,7 +1869,7 @@ if OHM:
     ax1.set_xlim([-9, 9])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM\y1_2.png', dpi=300,
+    plt.savefig(r'y1_2.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ######
@@ -1894,7 +1891,7 @@ if OHM:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-3, 0])
     ax1.set_xlim([-9, 9])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM\model_y1_2.png', dpi=300,
+    plt.savefig(r'model_y1_2.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -1919,7 +1916,7 @@ if OHM:
     ax1.set_aspect('equal', adjustable='box')
     ax1.yaxis.set_major_locator(ticker.MultipleLocator(1))
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM\mesh_y1_2.png', dpi=300,
+    plt.savefig(r'mesh_y1_2.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 
@@ -1951,7 +1948,7 @@ if OHM:
     ax1.set_xlim([-9, 9])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM\y-1_6.png', dpi=300,
+    plt.savefig(r'y-1_6.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ######
@@ -1973,7 +1970,7 @@ if OHM:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-3, 0])
     ax1.set_xlim([-9, 9])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM\model_y-1_6.png', dpi=300,
+    plt.savefig(r'model_y-1_6.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -1998,7 +1995,7 @@ if OHM:
     ax1.set_aspect('equal', adjustable='box')
     ax1.yaxis.set_major_locator(ticker.MultipleLocator(1))
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM\mesh_y-1_6.png', dpi=300,
+    plt.savefig(r'mesh_y-1_6.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 
@@ -2030,7 +2027,7 @@ if OHM:
     ax1.set_xlim([-9, 9])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM\y-4_2.png', dpi=300,
+    plt.savefig(r'y-4_2.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ######
@@ -2052,7 +2049,7 @@ if OHM:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-3, 0])
     ax1.set_xlim([-9, 9])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM\model_y-4_2.png', dpi=300,
+    plt.savefig(r'model_y-4_2.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -2077,7 +2074,7 @@ if OHM:
     ax1.set_aspect('equal', adjustable='box')
     ax1.yaxis.set_major_locator(ticker.MultipleLocator(1))
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM\mesh_y-4_2.png', dpi=300,
+    plt.savefig(r'mesh_y-4_2.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 
@@ -2109,7 +2106,7 @@ if OHM:
     ax1.set_xlim([-9, 9])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM\y-7.png', dpi=300,
+    plt.savefig(r'y-7.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ######
@@ -2131,7 +2128,7 @@ if OHM:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-3, 0])
     ax1.set_xlim([-9, 9])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM\model_y-7.png', dpi=300,
+    plt.savefig(r'model_y-7.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -2156,7 +2153,7 @@ if OHM:
     ax1.set_aspect('equal', adjustable='box')
     ax1.yaxis.set_major_locator(ticker.MultipleLocator(1))
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\OHM\mesh_y-7.png', dpi=300,
+    plt.savefig(r'mesh_y-7.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 
@@ -2166,9 +2163,9 @@ if OHM:
 
 if ERT:
     # Definizione dei colori
-    model_interp = np.loadtxt('C:/Users/lopan/PycharmProjects/STELLA/Res/ERT/XYZr_GCR.txt', skiprows=1, delimiter='\t')
+    model_interp = np.loadtxt('XYZr_GCR.txt', skiprows=1, delimiter='\t')
     colormap = np.loadtxt(
-        r"G:\.shortcut-targets-by-id\1U5Mbs1kWT545VLL1mMUjiV8eOfupEFet\Paper Geoelettrica\Draft\Figure\Figure5\colorscale.lut",
+        r"colorscale.lut",
         skiprows=1, delimiter=' ')
     cmap_new = matplotlib.colors.ListedColormap(colormap)
 
@@ -2245,7 +2242,7 @@ if ERT:
     cbar.set_label("Resistivity [Ohm*m]")
 
     # Salvare la figura
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\ERT\perc.png', dpi=300, bbox_inches='tight')
+    plt.savefig(r'perc.png', dpi=300, bbox_inches='tight')
     plt.close(fig)
 ####
     # Modello di resistività
@@ -2286,7 +2283,7 @@ if ERT:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\ERT\x7.8.png', dpi=300,
+    plt.savefig(r'x7.8.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ####
@@ -2320,7 +2317,7 @@ if ERT:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-5, 0])
     ax1.set_xlim([-8, 8])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\ERT\model_x7_8.png', dpi=300,
+    plt.savefig(r'model_x7_8.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ####
@@ -2344,7 +2341,7 @@ if ERT:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\ERT\mesh_x7.8.png', dpi=300,
+    plt.savefig(r'mesh_x7.8.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 #########
@@ -2389,7 +2386,7 @@ if ERT:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\ERT\x3.png', dpi=300,
+    plt.savefig(r'x3.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -2423,7 +2420,7 @@ if ERT:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-5, 0])
     ax1.set_xlim([-8, 8])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\ERT\model_x3.png', dpi=300,
+    plt.savefig(r'model_x3.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
     ####
@@ -2447,7 +2444,7 @@ if ERT:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\ERT\mesh_x3.png', dpi=300,
+    plt.savefig(r'mesh_x3.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 #########
@@ -2490,7 +2487,7 @@ if ERT:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\ERT\x1.png', dpi=300,
+    plt.savefig(r'x1.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ####
@@ -2524,7 +2521,7 @@ if ERT:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-5, 0])
     ax1.set_xlim([-8, 8])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\ERT\model_x1.png', dpi=300,
+    plt.savefig(r'model_x1.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ####
@@ -2548,7 +2545,7 @@ if ERT:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\ERT\mesh_x1.png', dpi=300,
+    plt.savefig(r'mesh_x1.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 #########
@@ -2591,7 +2588,7 @@ if ERT:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\ERT\x-2.png', dpi=300,
+    plt.savefig(r'x-2.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ####
@@ -2625,7 +2622,7 @@ if ERT:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-5, 0])
     ax1.set_xlim([-8, 8])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\ERT\model_x-2.png', dpi=300,
+    plt.savefig(r'model_x-2.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ####
@@ -2649,7 +2646,7 @@ if ERT:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\ERT\mesh_x-2.png', dpi=300,
+    plt.savefig(r'mesh_x-2.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 #########
@@ -2692,7 +2689,7 @@ if ERT:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\ERT\x-5.png', dpi=300,
+    plt.savefig(r'x-5.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ####
@@ -2726,7 +2723,7 @@ if ERT:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-5, 0])
     ax1.set_xlim([-8, 8])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\ERT\model_x-5.png', dpi=300,
+    plt.savefig(r'model_x-5.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ####
@@ -2750,7 +2747,7 @@ if ERT:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\ERT\mesh_x-5.png', dpi=300,
+    plt.savefig(r'mesh_x-5.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 #########
@@ -2793,7 +2790,7 @@ if ERT:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\ERT\x-8.png', dpi=300,
+    plt.savefig(r'x-8.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ####
@@ -2827,7 +2824,7 @@ if ERT:
     ax1.set_ylabel("z (m)")
     ax1.set_ylim([-5, 0])
     ax1.set_xlim([-8, 8])
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\ERT\model_x-8.png', dpi=300,
+    plt.savefig(r'model_x-8.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 ####
@@ -2851,7 +2848,7 @@ if ERT:
     ax1.set_xlim([-8, 8])
 
     # Salvare la figura del modello di resistività senza la colorbar
-    plt.savefig(r'C:\Users\lopan\PycharmProjects\STELLA\Res\ERT\mesh_x-8.png', dpi=300,
+    plt.savefig(r'mesh_x-8.png', dpi=300,
                 bbox_inches='tight')
     plt.close(fig)  # Chiude la figura per liberare memoria
 #########
@@ -2938,7 +2935,7 @@ handles = [
 ]
 ax.legend(handles=handles, loc='upper right')
 
-plt.savefig(r'C:/Users/lopan/PycharmProjects/STELLA/Res/JOINT/box_plot.png')
+plt.savefig(r'box_plot.png')
 plt.close()
 
 numero_totale_dati = len(res_mod)
@@ -2981,4 +2978,4 @@ old_range = old_max - old_min
 res_mod[mask] = min_val + (values_to_redistribute - old_min) * (new_range / old_range)
 
 # Display the modified matrix
-print(data_matrix)
+#print(data_matrix)
